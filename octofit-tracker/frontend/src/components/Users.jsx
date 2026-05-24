@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { fetchApiItems } from './api.js'
 
+const USERS_ENDPOINT = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : 'http://localhost:8000/api/users/'
+
 function renderValue(value) {
   if (value === null || value === undefined) {
     return <span className="text-muted">—</span>
