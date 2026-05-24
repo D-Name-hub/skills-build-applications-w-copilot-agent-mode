@@ -1,48 +1,11 @@
 import { Link, Route, Routes } from 'react-router-dom'
-
-function Home() {
-  return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-8">
-          <div className="card shadow-sm border-0">
-            <div className="card-body p-5">
-              <p className="text-primary fw-semibold text-uppercase">OctoFit Tracker</p>
-              <h1 className="display-5 fw-bold">Welcome to your modern multi-tier starter app</h1>
-              <p className="lead text-muted mt-3">
-                The presentation tier is now powered by React 19 and Vite, the logic tier runs on Express and TypeScript, and the data tier is prepared for MongoDB access with Mongoose.
-              </p>
-              <div className="mt-4 d-flex gap-3 flex-wrap">
-                <Link to="/" className="btn btn-primary">Dashboard</Link>
-                <Link to="/workouts" className="btn btn-outline-primary">Workouts</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Workouts() {
-  return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-8">
-          <div className="card shadow-sm border-0">
-            <div className="card-body p-5">
-              <h1 className="h3 fw-bold">Workout planning</h1>
-              <p className="text-muted mt-3">
-                This placeholder route shows the router wiring for the frontend while the backend APIs are being added.
-              </p>
-              <Link to="/" className="btn btn-outline-secondary">Back to home</Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+import Activities from './components/Activities.jsx'
+import Home from './components/Home.jsx'
+import Leaderboard from './components/Leaderboard.jsx'
+import Teams from './components/Teams.jsx'
+import Users from './components/Users.jsx'
+import Workouts from './components/Workouts.jsx'
+import './App.css'
 
 function App() {
   return (
@@ -52,14 +15,22 @@ function App() {
           <span className="navbar-brand fw-bold">OctoFit Tracker</span>
           <div className="navbar-nav">
             <Link className="nav-link" to="/">Home</Link>
+            <Link className="nav-link" to="/activities">Activities</Link>
             <Link className="nav-link" to="/workouts">Workouts</Link>
+            <Link className="nav-link" to="/leaderboard">Leaderboard</Link>
+            <Link className="nav-link" to="/teams">Teams</Link>
+            <Link className="nav-link" to="/users">Users</Link>
           </div>
         </div>
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/activities" element={<Activities />} />
         <Route path="/workouts" element={<Workouts />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/users" element={<Users />} />
       </Routes>
     </div>
   )
