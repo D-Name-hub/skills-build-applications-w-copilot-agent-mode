@@ -1,9 +1,10 @@
 // Seed the octofit_db database with test data
-import mongoose from 'mongoose';
 import { Activity, Leaderboard, Team, User, Workout } from '../models.js';
+import { connectDatabase } from '../config/database.js';
 const mongoUri = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/octofit_db';
 const seedData = async () => {
-    await mongoose.connect(mongoUri);
+    console.log('Seed the octofit_db database with test data');
+    await connectDatabase(mongoUri);
     await Promise.all([
         User.deleteMany({}),
         Team.deleteMany({}),
@@ -86,10 +87,8 @@ const seedData = async () => {
     console.log('Seeded activities:', activities.length);
     console.log('Seeded leaderboard:', leaderboard.length);
     console.log('Seeded workouts:', workouts.length);
-    await mongoose.disconnect();
 };
-seedData().catch(async (error) => {
+seedData().catch((error) => {
     console.error('Failed to seed octofit_db:', error);
-    await mongoose.disconnect().catch(() => undefined);
     process.exit(1);
 });

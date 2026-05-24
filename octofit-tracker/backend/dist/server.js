@@ -1,7 +1,9 @@
+import { pathToFileURL } from 'node:url';
 import express from 'express';
 import mongoose from 'mongoose';
 import { Activity, Leaderboard, Team, User, Workout } from './models.js';
-const app = express();
+import { connectDatabase, disconnectDatabase } from './config/database.js';
+export const app = express();
 const port = Number(process.env.PORT ?? 8000);
 const mongoUri = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/octofit_db';
 const codespaceName = process.env.CODESPACE_NAME;
@@ -43,12 +45,12 @@ app.get(['/api/workouts', '/api/workouts/'], async (_req, res) => {
     const workouts = await Workout.find({}).lean();
     res.json(workouts);
 });
-function startServer() {
+async function startServer() {
     app.listen(port, async () => {
         console.log(`OctoFit Tracker backend listening on port ${port}`);
         console.log(`API base URL: ${apiBaseUrl}`);
         try {
-            await mongoose.connect(mongoUri);
+            await connectDatabase(mongoUri);
             console.log('MongoDB connected');
         }
         catch (error) {
@@ -56,8 +58,14 @@ function startServer() {
         }
     });
 }
-startServer();
-process.on('SIGINT', async () => {
-    await mongoose.disconnect().catch(() => undefined);
-    process.exit(0);
-});
+if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
+    startServer();
+    process.on('SIGINT', async () => {
+        await disconnectDatabase();
+        process.exit(0);
+    });
+    process.on('SIGTERM', async () => {
+        await disconnectDatabase();
+        process.exit(0);
+    });
+}
