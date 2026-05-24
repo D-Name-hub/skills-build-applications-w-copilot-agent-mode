@@ -6,6 +6,7 @@ import { connectDatabase, disconnectDatabase } from './config/database.js';
 
 export const app = express();
 const port = Number(process.env.PORT ?? 8000);
+const host = process.env.HOST ?? '0.0.0.0';
 const mongoUri = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/octofit_db';
 const codespaceName = process.env.CODESPACE_NAME;
 const apiBaseUrl = codespaceName
@@ -56,7 +57,7 @@ app.get(['/api/workouts', '/api/workouts/'], async (_req, res) => {
 });
 
 async function startServer() {
-  app.listen(port, async () => {
+  app.listen(port, host, async () => {
     console.log(`OctoFit Tracker backend listening on port ${port}`);
     console.log(`API base URL: ${apiBaseUrl}`);
 
